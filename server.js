@@ -1,3 +1,13 @@
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+require('dotenv').config();
+
+// ✅ Create the Express app BEFORE using it
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
@@ -22,3 +32,7 @@ app.post('/chat', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// ✅ Use the port provided by Render
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
