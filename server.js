@@ -24,11 +24,14 @@ app.post('/chat', async (req, res) => {
       }
     );
 
-    res.json({ reply: response.data.choices[0].message.content });
+    const reply = response.data.choices?.[0]?.message?.content || "Sorry, I didn't understand that.";
+    res.json({ reply });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('OpenAI error:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-const PORT = process.env.PORT || 3000;
+// ✅ Use only the port Render provides
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
